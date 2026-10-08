@@ -1,46 +1,26 @@
-# Astro Starter Kit: Basics
+# Twin Pixels
+
+The studio's single-page teaser, built with Astro and deployed to GitHub Pages at
+[twinpixels.gg](https://twinpixels.gg). Pushing to `main` runs the existing deployment workflow.
 
 ```sh
-yarn create astro@latest -- --template basics
+yarn install --frozen-lockfile
+yarn dev
+yarn build
+yarn preview
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+The page uses the Twin Pixels splash mark and Kindred's fonts. The silent background
+is an in-engine capture of Kindred's title meadow, without people or HUD. It autoplays
+muted and loops, with a small Pause scenery button and no native video controls.
+Playback pauses while the page is hidden; a visitor's manual pause is preserved.
+If autoplay is blocked, the button offers Play scenery. The JPEG poster remains
+visible while video loads or if video is unavailable.
 
-## 🚀 Project Structure
+The fixed-camera loop runs for 3 minutes 2 seconds at 1280 × 800 and 30 fps. The deer
+walks in from outside the frame and leaves naturally. Loop transitions blend only
+empty scenery, never the deer.
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `yarn install`             | Installs dependencies                            |
-| `yarn dev`             | Starts local dev server at `localhost:4321`      |
-| `yarn build`           | Build your production site to `./dist/`          |
-| `yarn preview`         | Preview your build locally, before deploying     |
-| `yarn astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `yarn astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Teaser copy and presentation live in `src/pages/index.astro`; metadata lives in
+`src/layouts/Layout.astro`. Media is in `public/media/`, fonts and their SIL Open Font
+Licenses in `public/fonts/`. The logo uses the splash colors `#00E676` and `#00B0FF`.
