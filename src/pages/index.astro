@@ -5,7 +5,7 @@ const year = new Date().getUTCFullYear();
 
 <Layout>
   <div class="landscape" aria-hidden="true">
-    <video id="landscape-video" muted loop playsinline preload="none" poster="/media/kindred-poster.jpg" tabindex="-1"></video>
+    <video id="landscape-video" autoplay muted loop playsinline preload="auto" src="/media/kindred-loop.mp4" poster="/media/kindred-poster.jpg" tabindex="-1"></video>
   </div>
 
   <div class="page">
@@ -14,13 +14,12 @@ const year = new Date().getUTCFullYear();
         <img src="/logo.svg" width="36" height="36" alt="" />
         <span>Twin Pixels</span>
       </a>
-      <span class="status"><span class="status-dot" aria-hidden="true"></span>Building quietly.</span>
     </header>
 
     <main>
       <p class="eyebrow">An independent game studio</p>
       <h1>A world worth<br />getting lost in.</h1>
-      <p class="description">We're creating a new game and the engine that brings it to life. More when it's ready.</p>
+      <p class="description">We're creating a new game and the engine that brings it to life.</p>
     </main>
 
     <footer>
@@ -31,7 +30,7 @@ const year = new Date().getUTCFullYear();
           <svg class="play-icon" width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="m3 1 8 5-8 5z" /></svg>
           <span id="motion-label">Pause scenery</span>
         </button>
-        <a class="contact" href="mailto:info@twinpixels.gg">Get in touch <span aria-hidden="true">↗</span></a>
+        <a class="contact" href="mailto:info@twinpixels.gg">Get in touch <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 12 12 4M4 4h8v8" /></svg></a>
       </div>
     </footer>
   </div>
@@ -41,10 +40,7 @@ const year = new Date().getUTCFullYear();
   const video = document.querySelector<HTMLVideoElement>('#landscape-video')!;
   const toggle = document.querySelector<HTMLButtonElement>('#motion-toggle')!;
   const label = document.querySelector<HTMLSpanElement>('#motion-label')!;
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
   let userPaused = false;
-  let userRequestedMotion = false;
   let failed = false;
 
   function syncControl() {
@@ -53,10 +49,10 @@ const year = new Date().getUTCFullYear();
   }
 
   async function updatePlayback() {
-    if (((reducedMotion.matches || connection?.saveData) && !userRequestedMotion) || failed) {
+    if (failed) {
       video.pause();
       video.classList.remove('playing');
-      toggle.hidden = failed;
+      toggle.hidden = true;
       syncControl();
       if (video.hasAttribute('src')) {
         video.removeAttribute('src');
@@ -72,7 +68,7 @@ const year = new Date().getUTCFullYear();
     try {
       await video.play();
     } catch {
-      if (!document.hidden && !reducedMotion.matches) {
+      if (!document.hidden) {
         toggle.hidden = false;
         syncControl();
       }
@@ -90,14 +86,9 @@ const year = new Date().getUTCFullYear();
     void updatePlayback();
   });
   toggle.addEventListener('click', () => {
-    userRequestedMotion = true;
     userPaused = !video.paused;
     void updatePlayback();
     syncControl();
-  });
-  reducedMotion.addEventListener('change', () => {
-    userRequestedMotion = false;
-    void updatePlayback();
   });
   document.addEventListener('visibilitychange', () => void updatePlayback());
   void updatePlayback();
@@ -128,8 +119,6 @@ const year = new Date().getUTCFullYear();
   header, footer { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
   .brand { display: inline-flex; align-items: center; gap: 16px; text-decoration: none; }
   .brand span { font-size: 17px; text-transform: uppercase; letter-spacing: .17em; }
-  .status { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; color: #dedfd8; }
-  .status-dot { width: 5px; height: 5px; background: #00e676; }
   main { align-self: center; padding: 100px 0 120px; }
   .eyebrow { margin: 0 0 23px; text-transform: uppercase; letter-spacing: .2em; font-size: 11px; color: #d3dcd1; }
   h1 { margin: 0; font-family: 'Alegreya', Georgia, serif; font-size: clamp(60px, 6.7vw, 108px); font-weight: 400; line-height: 1.02; letter-spacing: -.035em; }
@@ -137,8 +126,8 @@ const year = new Date().getUTCFullYear();
   footer { border-top: 1px solid rgb(244 243 236 / 20%); padding-top: 20px; font-size: 13px; }
   .copyright { color: #bfc7c3; }
   .footer-actions { display: flex; align-items: center; gap: 32px; }
-  .contact { display: inline-flex; align-items: center; gap: 17px; text-decoration: none; padding: 12px 0; }
-  .contact span { color: #00e676; font-size: 18px; }
+  .contact { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; line-height: 1; text-decoration: none; padding: 12px 0; }
+  .contact svg { display: block; flex: none; color: #00e676; }
   .contact:hover { color: #00e676; }
   button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 44px; border: 0; padding: 8px; color: #bfc7c3; background: transparent; cursor: pointer; }
   button:hover { color: #f4f3ec; }
@@ -152,7 +141,6 @@ const year = new Date().getUTCFullYear();
     .brand { gap: 12px; }
     .brand img { width: 30px; height: 30px; }
     .brand span { font-size: 13px; letter-spacing: .12em; }
-    .status { font-size: 11px; padding-top: 8px; gap: 6px; }
     main { padding: 90px 0 100px; }
     .eyebrow { font-size: 9px; letter-spacing: .16em; margin-bottom: 20px; }
     h1 { font-size: clamp(40px, 11.7vw, 70px); }

@@ -11,11 +11,15 @@ yarn preview
 ```
 
 The page uses the Twin Pixels splash mark and Kindred's fonts. The silent background
-is an in-engine capture of Kindred's title meadow, without people or HUD. Its JPEG
-poster also serves visitors with reduced motion, data saving, disabled JavaScript,
-or unavailable video. Motion and data-saving preferences skip the video download
-unless the visitor chooses Play scenery. A play/pause control appears when video
-is available; playback pauses while the page is hidden.
+is an in-engine capture of Kindred's title meadow, without people or HUD. It autoplays
+muted and loops, with a small Pause scenery button and no native video controls.
+Playback pauses while the page is hidden; a visitor's manual pause is preserved.
+If autoplay is blocked, the button offers Play scenery. The JPEG poster remains
+visible while video loads or if video is unavailable.
+
+The fixed-camera loop runs for 3 minutes 2 seconds at 1280 × 800 and 30 fps. The deer
+walks in from outside the frame and leaves naturally. Loop transitions blend only
+empty scenery, never the deer.
 
 Teaser copy and presentation live in `src/pages/index.astro`; metadata lives in
 `src/layouts/Layout.astro`. Media is in `public/media/`, fonts and their SIL Open Font
