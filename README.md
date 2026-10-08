@@ -17,7 +17,7 @@ Playback pauses while the page is hidden; a visitor's manual pause is preserved.
 If autoplay is blocked, the button offers Play scenery. The JPEG poster remains
 visible while video loads or if video is unavailable.
 
-The fixed-camera loop runs for 3 minutes 4 seconds at 1280 × 800 and 30 fps. A stag
+The fixed-camera loop runs for 3 minutes 2 seconds at 1280 × 800 and 30 fps. A stag
 and two does walk through the background meadow, pause to graze and look around,
 then leave naturally. Loop transitions blend only empty scenery, never the herd.
 The phone crop follows their grazing spot and keeps all three above the headline.
