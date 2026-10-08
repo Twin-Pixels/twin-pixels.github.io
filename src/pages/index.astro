@@ -1,81 +1,165 @@
 ---
 import Layout from '../layouts/Layout.astro';
+const year = new Date().getUTCFullYear();
 ---
 
 <Layout>
-	<main>
-		<div class="container">
-			<img src="/logo.svg" alt="Twin Pixels Logo" class="logo" />
-			<h1>Twin Pixels, LLC</h1>
-			<p class="tagline">Forging new mobile adventures</p>
-			<a href="mailto:info@twinpixels.gg" class="contact">info@twinpixels.gg</a>
-		</div>
-	</main>
+  <div class="landscape" aria-hidden="true">
+    <video id="landscape-video" muted loop playsinline preload="none" poster="/media/kindred-poster.jpg" tabindex="-1"></video>
+  </div>
+
+  <div class="page">
+    <header>
+      <a class="brand" href="/" aria-label="Twin Pixels home">
+        <img src="/logo.svg" width="36" height="36" alt="" />
+        <span>Twin Pixels</span>
+      </a>
+      <span class="status"><span class="status-dot" aria-hidden="true"></span>Building quietly.</span>
+    </header>
+
+    <main>
+      <p class="eyebrow">An independent game studio</p>
+      <h1>A world worth<br />getting lost in.</h1>
+      <p class="description">We're creating a new game and the engine that brings it to life. More when it's ready.</p>
+    </main>
+
+    <footer>
+      <span class="copyright">© {year} Twin Pixels, LLC</span>
+      <div class="footer-actions">
+        <button id="motion-toggle" type="button" aria-label="Pause background video" hidden>
+          <svg class="pause-icon" width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M2 1h3v10H2zM7 1h3v10H7z" /></svg>
+          <svg class="play-icon" width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="m3 1 8 5-8 5z" /></svg>
+          <span id="motion-label">Pause scenery</span>
+        </button>
+        <a class="contact" href="mailto:info@twinpixels.gg">Get in touch <span aria-hidden="true">↗</span></a>
+      </div>
+    </footer>
+  </div>
 </Layout>
 
+<script>
+  const video = document.querySelector<HTMLVideoElement>('#landscape-video')!;
+  const toggle = document.querySelector<HTMLButtonElement>('#motion-toggle')!;
+  const label = document.querySelector<HTMLSpanElement>('#motion-label')!;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+  let userPaused = false;
+  let userRequestedMotion = false;
+  let failed = false;
+
+  function syncControl() {
+    toggle.setAttribute('aria-label', video.paused ? 'Play background video' : 'Pause background video');
+    label.textContent = video.paused ? 'Play scenery' : 'Pause scenery';
+  }
+
+  async function updatePlayback() {
+    if (((reducedMotion.matches || connection?.saveData) && !userRequestedMotion) || failed) {
+      video.pause();
+      video.classList.remove('playing');
+      toggle.hidden = failed;
+      syncControl();
+      if (video.hasAttribute('src')) {
+        video.removeAttribute('src');
+        video.load();
+      }
+      return;
+    }
+    if (!video.hasAttribute('src')) video.src = '/media/kindred-loop.mp4';
+    if (document.hidden || userPaused) {
+      video.pause();
+      return;
+    }
+    try {
+      await video.play();
+    } catch {
+      if (!document.hidden && !reducedMotion.matches) {
+        toggle.hidden = false;
+        syncControl();
+      }
+    }
+  }
+
+  video.addEventListener('playing', () => {
+    video.classList.add('playing');
+    toggle.hidden = false;
+    syncControl();
+  });
+  video.addEventListener('pause', syncControl);
+  video.addEventListener('error', () => {
+    failed = true;
+    void updatePlayback();
+  });
+  toggle.addEventListener('click', () => {
+    userRequestedMotion = true;
+    userPaused = !video.paused;
+    void updatePlayback();
+    syncControl();
+  });
+  reducedMotion.addEventListener('change', () => {
+    userRequestedMotion = false;
+    void updatePlayback();
+  });
+  document.addEventListener('visibilitychange', () => void updatePlayback());
+  void updatePlayback();
+</script>
+
 <style>
-	main {
-		width: 100%;
-		height: 100vh;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 2rem;
-		box-sizing: border-box;
-	}
-
-	.container {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		text-align: center;
-		max-width: 600px;
-	}
-
-	.logo {
-		width: 100%;
-		max-width: 300px;
-		height: auto;
-		margin-bottom: 2rem;
-	}
-
-	h1 {
-		font-size: 2.5rem;
-		font-weight: 700;
-		margin: 0 0 1rem 0;
-		letter-spacing: -0.02em;
-	}
-
-	.tagline {
-		font-size: 1.25rem;
-		font-weight: 300;
-		margin: 0 0 2rem 0;
-		color: #D1D5DB;
-	}
-
-	.contact {
-		font-size: 1.125rem;
-		color: #FFFFFF;
-		text-decoration: none;
-		border-bottom: 1px solid transparent;
-		transition: border-bottom-color 0.2s ease;
-	}
-
-	.contact:hover {
-		border-bottom-color: #00DC82;
-	}
-
-	@media (max-width: 640px) {
-		h1 {
-			font-size: 2rem;
-		}
-
-		.tagline {
-			font-size: 1.125rem;
-		}
-
-		.logo {
-			max-width: 250px;
-		}
-	}
+  .landscape {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: #080d0e url('/media/kindred-poster.jpg') center / cover no-repeat;
+  }
+  .landscape::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgb(4 12 13 / 72%) 0%, rgb(4 12 13 / 35%) 58%, rgb(4 12 13 / 12%) 100%),
+      linear-gradient(0deg, rgb(4 12 13 / 85%) 0%, transparent 36%, transparent 70%, rgb(4 12 13 / 45%) 100%);
+  }
+  video { width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s ease; }
+  video.playing { opacity: 1; }
+  .page {
+    min-height: 100svh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: 42px clamp(24px, 5vw, 88px) 26px;
+  }
+  header, footer { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .brand { display: inline-flex; align-items: center; gap: 16px; text-decoration: none; }
+  .brand span { font-size: 17px; text-transform: uppercase; letter-spacing: .17em; }
+  .status { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; color: #dedfd8; }
+  .status-dot { width: 5px; height: 5px; background: #00e676; }
+  main { align-self: center; padding: 100px 0 120px; }
+  .eyebrow { margin: 0 0 23px; text-transform: uppercase; letter-spacing: .2em; font-size: 11px; color: #d3dcd1; }
+  h1 { margin: 0; font-family: 'Alegreya', Georgia, serif; font-size: clamp(60px, 6.7vw, 108px); font-weight: 400; line-height: 1.02; letter-spacing: -.035em; }
+  .description { margin: 28px 0 0; max-width: 460px; font-size: 17px; line-height: 1.65; color: #d3d8d3; }
+  footer { border-top: 1px solid rgb(244 243 236 / 20%); padding-top: 20px; font-size: 13px; }
+  .copyright { color: #bfc7c3; }
+  .footer-actions { display: flex; align-items: center; gap: 32px; }
+  .contact { display: inline-flex; align-items: center; gap: 17px; text-decoration: none; padding: 12px 0; }
+  .contact span { color: #00e676; font-size: 18px; }
+  .contact:hover { color: #00e676; }
+  button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 44px; border: 0; padding: 8px; color: #bfc7c3; background: transparent; cursor: pointer; }
+  button:hover { color: #f4f3ec; }
+  button[hidden] { display: none; }
+  .play-icon { display: none; }
+  button[aria-label='Play background video'] .play-icon { display: block; }
+  button[aria-label='Play background video'] .pause-icon { display: none; }
+  @media (max-width: 600px) {
+    .page { padding-top: 28px; padding-bottom: 16px; }
+    header { align-items: flex-start; gap: 16px; }
+    .brand { gap: 12px; }
+    .brand img { width: 30px; height: 30px; }
+    .brand span { font-size: 13px; letter-spacing: .12em; }
+    .status { font-size: 11px; padding-top: 8px; gap: 6px; }
+    main { padding: 90px 0 100px; }
+    .eyebrow { font-size: 9px; letter-spacing: .16em; margin-bottom: 20px; }
+    h1 { font-size: clamp(40px, 11.7vw, 70px); }
+    .description { max-width: 300px; font-size: 15px; margin-top: 24px; }
+    footer { align-items: flex-start; flex-direction: column-reverse; gap: 13px; padding-top: 8px; font-size: 12px; }
+    .footer-actions { width: 100%; justify-content: space-between; flex-direction: row-reverse; gap: 8px; }
+    .landscape::after { background: linear-gradient(0deg, rgb(4 12 13 / 92%), rgb(4 12 13 / 45%) 60%, rgb(4 12 13 / 40%)); }
+  }
+  @media (prefers-reduced-motion: reduce) { video { transition: none; } }
 </style>
