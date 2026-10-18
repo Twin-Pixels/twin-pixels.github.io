@@ -7,7 +7,6 @@ const [latest, ...earlier] = posts;
 ---
 
 <DevlogLayout title="Devlog | Twin Pixels">
-  <h1>devlog.</h1>
 
   {posts.length === 0 && <p class="empty">The first post is on its way.</p>}
 
@@ -49,7 +48,6 @@ const [latest, ...earlier] = posts;
 </DevlogLayout>
 
 <style>
-  h1 { margin: 0 0 72px; font-family: 'Alegreya', Georgia, serif; font-weight: 400; font-size: clamp(52px, 6.7vw, 88px); line-height: 1.02; letter-spacing: -.035em; }
   .empty { color: #bfc7c3; font-size: 17px; }
   .latest { display: flex; flex-wrap: wrap; gap: 40px; margin-bottom: 72px; }
   .cover { flex: 1 1 560px; min-height: 380px; border-radius: 4px; overflow: hidden; background: linear-gradient(165deg, #23483a 0%, #12262c 55%, #0b1620 100%); box-shadow: 0 0 0 1px rgb(244 243 236 / 12%); }
