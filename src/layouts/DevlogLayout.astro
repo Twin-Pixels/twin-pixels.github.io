@@ -1,0 +1,57 @@
+---
+import Layout from './Layout.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  imageAlt?: string;
+}
+const { title = 'Devlog | Twin Pixels', description = 'What changed in Kindred and Driftstone this week.', image, imageAlt } = Astro.props;
+const year = new Date().getUTCFullYear();
+// Unlisted until the devlog is announced: public, but kept out of search results.
+const noindex = true;
+---
+
+<Layout title={title} description={description} image={image} imageAlt={imageAlt} noindex={noindex}>
+  <div class="shell">
+    <header>
+      <a class="brand" href="/devlog/" aria-label="Twin Pixels devlog home">
+        <img src="/logo.svg" width="36" height="36" alt="" />
+        <span>Twin Pixels</span>
+        <span class="section">/ Devlog</span>
+      </a>
+      <nav>
+        <a href="/devlog/">Posts</a>
+        <a href="/">twinpixels.gg</a>
+      </nav>
+    </header>
+    <main><slot /></main>
+    <footer>
+      <span>© {year} Twin Pixels, LLC</span>
+      <span class="links">
+        <a href="/devlog/rss.xml">RSS</a>
+        <a href="mailto:info@twinpixels.gg">Get in touch</a>
+      </span>
+    </footer>
+  </div>
+</Layout>
+
+<style>
+  .shell { min-height: 100svh; display: flex; flex-direction: column; padding: 42px clamp(24px, 5vw, 88px) 26px; gap: 72px; }
+  header, footer { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .brand { display: inline-flex; align-items: center; gap: 16px; text-decoration: none; text-transform: uppercase; letter-spacing: .17em; font-size: 17px; }
+  .section { color: #8a9692; }
+  nav { display: flex; gap: 28px; font-size: 14px; color: #bfc7c3; }
+  nav a { text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
+  nav a:hover, footer a:hover { color: #00e676; }
+  main { flex: 1; }
+  footer { border-top: 1px solid rgb(244 243 236 / 20%); padding-top: 20px; font-size: 13px; color: #bfc7c3; }
+  .links { display: flex; gap: 28px; }
+  .links a { text-decoration: none; }
+  @media (max-width: 600px) {
+    .shell { padding-top: 28px; gap: 48px; }
+    .brand { font-size: 13px; gap: 12px; letter-spacing: .12em; }
+    .brand img { width: 30px; height: 30px; }
+  }
+</style>

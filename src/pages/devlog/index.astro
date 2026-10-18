@@ -1,0 +1,81 @@
+---
+import DevlogLayout from '../../layouts/DevlogLayout.astro';
+import { getPosts, projectNames, formatDate } from '../../lib/devlog';
+
+const posts = await getPosts();
+const [latest, ...earlier] = posts;
+---
+
+<DevlogLayout title="Devlog | Twin Pixels">
+  <section class="intro">
+    <p class="eyebrow">Making Kindred and Driftstone, week by week</p>
+    <h1>The devlog.</h1>
+    <p class="description">What changed in the game and the engine, in plain words, with the screenshots to show it.</p>
+  </section>
+
+  {posts.length === 0 && <p class="empty">The first post is on its way.</p>}
+
+  {latest && (
+    <section class="latest" aria-label="Latest post">
+      <a class="cover" href={`/devlog/${latest.id}/`} aria-label={`Read ${latest.data.title}`}>
+        {latest.data.cover && <img src={latest.data.cover} alt={latest.data.coverAlt ?? ''} />}
+      </a>
+      <div class="copy">
+        <p class="meta">
+          {latest.data.projects.map((p) => <span class={p}>{projectNames[p]}</span>)}
+          <span class="date">{formatDate(latest.data.date)}</span>
+        </p>
+        <h2><a href={`/devlog/${latest.id}/`}>{latest.data.title}</a></h2>
+        <p class="summary">{latest.data.summary}</p>
+        <a class="more" href={`/devlog/${latest.id}/`}>Read the post <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+  )}
+
+  {earlier.length > 0 && (
+    <section class="earlier" aria-label="Earlier posts">
+      <h2 class="label">Earlier weeks</h2>
+      {earlier.map((post) => (
+        <a class="row" href={`/devlog/${post.id}/`}>
+          <div class="thumb">{post.data.cover && <img src={post.data.cover} alt="" />}</div>
+          <div class="text">
+            <p class="meta">
+              {post.data.projects.map((p) => <span class={p}>{projectNames[p]}</span>)}
+              <span class="date">{formatDate(post.data.date)}</span>
+            </p>
+            <div class="title">{post.data.title}</div>
+            <div class="line">{post.data.summary}</div>
+          </div>
+        </a>
+      ))}
+    </section>
+  )}
+</DevlogLayout>
+
+<style>
+  .intro { display: flex; flex-direction: column; gap: 20px; max-width: 760px; margin-bottom: 72px; }
+  .eyebrow { margin: 0; text-transform: uppercase; letter-spacing: .2em; font-size: 11px; color: #d3dcd1; }
+  h1 { margin: 0; font-family: 'Alegreya', Georgia, serif; font-weight: 400; font-size: clamp(52px, 6.7vw, 88px); line-height: 1.02; letter-spacing: -.035em; }
+  .description { margin: 0; font-size: 17px; line-height: 1.65; color: #d3d8d3; max-width: 520px; }
+  .empty { color: #bfc7c3; font-size: 17px; }
+  .latest { display: flex; flex-wrap: wrap; gap: 40px; margin-bottom: 72px; }
+  .cover { flex: 1 1 560px; min-height: 380px; border-radius: 4px; overflow: hidden; background: linear-gradient(165deg, #23483a 0%, #12262c 55%, #0b1620 100%); box-shadow: 0 0 0 1px rgb(244 243 236 / 12%); }
+  .cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .copy { flex: 1 1 360px; display: flex; flex-direction: column; justify-content: center; gap: 18px; }
+  .meta { margin: 0; display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; text-transform: uppercase; letter-spacing: .14em; }
+  .kindred { color: #00e676; }
+  .driftstone { color: #00b0ff; }
+  .date { color: #8a9692; }
+  .copy h2 { margin: 0; font-family: 'Alegreya', Georgia, serif; font-weight: 400; font-size: clamp(36px, 4vw, 52px); line-height: 1.05; letter-spacing: -.03em; }
+  .copy h2 a { text-decoration: none; }
+  .summary { margin: 0; font-size: 17px; line-height: 1.6; color: #d3d8d3; }
+  .more { color: #00e676; font-size: 14px; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; }
+  .label { margin: 0; padding-top: 20px; border-top: 1px solid rgb(244 243 236 / 20%); font-size: 12px; font-weight: 400; text-transform: uppercase; letter-spacing: .2em; color: #d3dcd1; }
+  .row { display: flex; gap: 32px; align-items: center; padding: 28px 0; border-bottom: 1px solid rgb(244 243 236 / 12%); text-decoration: none; flex-wrap: wrap; }
+  .row:hover .title { color: #00e676; }
+  .thumb { flex: none; width: 200px; height: 120px; border-radius: 3px; overflow: hidden; background: linear-gradient(150deg, #1e3a2e, #0d1a26); }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .text { flex: 1 1 320px; display: flex; flex-direction: column; gap: 8px; }
+  .title { font-family: 'Alegreya', Georgia, serif; font-size: 32px; letter-spacing: -.02em; }
+  .line { font-size: 15px; line-height: 1.55; color: #bfc7c3; }
+</style>

@@ -1,8 +1,20 @@
 ---
-const title = 'Twin Pixels';
-const description = 'An independent studio building a new game and the engine that brings it to life.';
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  imageAlt?: string;
+  noindex?: boolean;
+}
+const {
+  title = 'Twin Pixels',
+  description = 'An independent studio building a new game and the engine that brings it to life.',
+  image: imagePath = '/media/kindred-poster.jpg',
+  imageAlt = 'Firelight in a quiet island meadow',
+  noindex = false,
+} = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const image = new URL('/media/kindred-poster.jpg', Astro.site);
+const image = new URL(imagePath, Astro.site);
 ---
 
 <!doctype html>
@@ -12,6 +24,7 @@ const image = new URL('/media/kindred-poster.jpg', Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#080d0e" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <link rel="preload" href="/fonts/Alegreya-Regular.ttf" as="font" type="font/ttf" crossorigin />
@@ -21,7 +34,7 @@ const image = new URL('/media/kindred-poster.jpg', Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={image} />
-    <meta property="og:image:alt" content="Firelight in a quiet island meadow" />
+    <meta property="og:image:alt" content={imageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
