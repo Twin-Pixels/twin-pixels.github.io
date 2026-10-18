@@ -16,9 +16,10 @@ const noindex = true;
 <Layout title={title} description={description} image={image} imageAlt={imageAlt} noindex={noindex}>
   <div class="shell">
     <header>
-      <a class="brand" href="/" aria-label="Twin Pixels home">
+      <a class="brand" href="/devlog/" aria-label="Twin Pixels devlog home">
         <img src="/logo.svg" width="36" height="36" alt="" />
         <span>Twin Pixels</span>
+        <span class="section">/ Devlog</span>
       </a>
     </header>
     <main><slot /></main>
@@ -33,6 +34,7 @@ const noindex = true;
   .shell { min-height: 100svh; display: flex; flex-direction: column; padding: 42px clamp(24px, 5vw, 88px) 26px; gap: 72px; }
   header, footer { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
   .brand { display: inline-flex; align-items: center; gap: 16px; text-decoration: none; text-transform: uppercase; letter-spacing: .17em; font-size: 17px; }
+  .section { color: #8a9692; }
   main { flex: 1; }
   footer { border-top: 1px solid rgb(244 243 236 / 20%); padding-top: 20px; font-size: 13px; color: #bfc7c3; }
   .contact { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; line-height: 1; text-decoration: none; padding: 12px 0; }
