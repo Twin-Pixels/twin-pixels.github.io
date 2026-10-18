@@ -7,11 +7,7 @@ const [latest, ...earlier] = posts;
 ---
 
 <DevlogLayout title="Devlog | Twin Pixels">
-  <section class="intro">
-    <p class="eyebrow">Making Kindred and Driftstone, week by week</p>
-    <h1>The devlog.</h1>
-    <p class="description">What changed in the game and the engine, in plain words, with the screenshots to show it.</p>
-  </section>
+  <h1>devlog.</h1>
 
   {posts.length === 0 && <p class="empty">The first post is on its way.</p>}
 
@@ -53,10 +49,7 @@ const [latest, ...earlier] = posts;
 </DevlogLayout>
 
 <style>
-  .intro { display: flex; flex-direction: column; gap: 20px; max-width: 760px; margin-bottom: 72px; }
-  .eyebrow { margin: 0; text-transform: uppercase; letter-spacing: .2em; font-size: 11px; color: #d3dcd1; }
-  h1 { margin: 0; font-family: 'Alegreya', Georgia, serif; font-weight: 400; font-size: clamp(52px, 6.7vw, 88px); line-height: 1.02; letter-spacing: -.035em; }
-  .description { margin: 0; font-size: 17px; line-height: 1.65; color: #d3d8d3; max-width: 520px; }
+  h1 { margin: 0 0 72px; font-family: 'Alegreya', Georgia, serif; font-weight: 400; font-size: clamp(52px, 6.7vw, 88px); line-height: 1.02; letter-spacing: -.035em; }
   .empty { color: #bfc7c3; font-size: 17px; }
   .latest { display: flex; flex-wrap: wrap; gap: 40px; margin-bottom: 72px; }
   .cover { flex: 1 1 560px; min-height: 380px; border-radius: 4px; overflow: hidden; background: linear-gradient(165deg, #23483a 0%, #12262c 55%, #0b1620 100%); box-shadow: 0 0 0 1px rgb(244 243 236 / 12%); }
