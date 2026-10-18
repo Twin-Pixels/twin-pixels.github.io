@@ -2,7 +2,8 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const devlog = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/devlog' }),
+  // Dated files only, so the folder's README is not treated as a post.
+  loader: glob({ pattern: '[0-9]*.md', base: './src/content/devlog' }),
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
