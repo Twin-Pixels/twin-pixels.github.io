@@ -7,7 +7,7 @@ export async function getPosts(): Promise<Post[]> {
   return posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 }
 
-export const projectNames: Record<string, string> = { kindred: 'Kindred', driftstone: 'Driftstone' };
+export const projectNames: Record<string, string> = { kindred: 'Kindred', alcor: 'Alcor' };
 
 export const formatDate = (date: Date) =>
   date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });

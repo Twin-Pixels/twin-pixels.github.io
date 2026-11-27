@@ -1,7 +1,7 @@
 ---
 title: 'Sample post: how a devlog entry looks'
 date: 2026-10-18
-projects: ['kindred', 'driftstone']
+projects: ['kindred', 'alcor']
 summary: 'A placeholder that shows the post layout. Replace or delete it when the first real post is written.'
 draft: true
 ---
@@ -14,7 +14,7 @@ What a player can now do, find or feel goes here, in plain words.
 
 ![Replace with a screenshot](/media/kindred-poster.jpg)
 
-## A Driftstone story
+## An Alcor story
 
 Engine work, described by what it lets the game do.
 

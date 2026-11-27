@@ -7,7 +7,7 @@ const devlog = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
-    projects: z.array(z.enum(['kindred', 'driftstone'])).min(1),
+    projects: z.array(z.enum(['kindred', 'alcor'])).min(1),
     summary: z.string(),
     cover: z.string().optional(),
     coverAlt: z.string().optional(),
