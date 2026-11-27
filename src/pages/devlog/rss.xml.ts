@@ -13,6 +13,6 @@ export const GET: APIRoute = async ({ site }) => {
       return `<item><title>${escape(post.data.title)}</title><link>${url}</link><guid>${url}</guid><pubDate>${post.data.date.toUTCString()}</pubDate><description>${escape(post.data.summary)}</description></item>`;
     })
     .join('');
-  const feed = `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Twin Pixels devlog</title><link>${new URL('/devlog/', base).href}</link><description>What changed in Kindred and Driftstone, week by week.</description>${items}</channel></rss>`;
+  const feed = `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Twin Pixels devlog</title><link>${new URL('/devlog/', base).href}</link><description>What changed in Kindred and Alcor, week by week.</description>${items}</channel></rss>`;
   return new Response(feed, { headers: { 'Content-Type': 'application/rss+xml; charset=utf-8' } });
 };

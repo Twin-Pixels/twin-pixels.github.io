@@ -6,7 +6,7 @@ One Markdown file per post, named `YYYY-MM-DD-short-title.md`. Front matter:
 ---
 title: 'Headline in plain words'
 date: 2026-10-25
-projects: ['kindred']        # kindred, driftstone, or both
+projects: ['kindred']        # kindred, alcor, or both
 summary: 'One sentence for the list page, feed and link previews.'
 cover: /devlog/2026-10-25/cover.webp   # optional, in public/devlog/<date>/
 coverAlt: 'What the cover shows'
